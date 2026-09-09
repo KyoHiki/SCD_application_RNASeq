@@ -204,10 +204,10 @@ net <- WGCNA::blockwiseModules(
   corType = "pearson",
   corFnc  = "cor",                              
   corOptions = list(use = "pairwise.complete.obs", method = "pearson"),
-  minModuleSize = 50,　　#なるべくmoduleを少なくするよう高めに調整, デフォルトは20
+  minModuleSize = 50,　   　#default: 20
   reassignThreshold = 0, 
-  mergeCutHeight = 0.3,  #なるべくmoduleを少なくするよう高めに調整, デフォルトは0.15
-  deepSplit = 0,　　#なるべくmoduleを少なくするよう低めに調整, デフォルトは2
+  mergeCutHeight = 0.3,     #default: 0.15
+  deepSplit = 0,　　        #default: 2
   numericLabels = TRUE,
   saveTOMs = FALSE,
   verbose = 3
@@ -225,7 +225,7 @@ MEs  <- data.frame( Concentration = Concentration) %>% cbind( WGCNA::orderMEs(ME
   remove_rownames()
   
 
-write.csv(MEs,"logCPM_eigengenes_pyrene_9modules.csv")   ### Inout data for python lingam analysis
+write.csv(MEs,"logCPM_eigengenes_pyrene_9modules.csv", row.names = FALSE)   ### Inout data for python lingam analysis
 
 
 
