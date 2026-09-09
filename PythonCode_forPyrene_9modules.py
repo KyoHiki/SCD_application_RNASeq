@@ -2,7 +2,6 @@ import os
 import time
 import dill
 import numpy as np
-from numpy.random import default_rng
 import pandas as pd
 import lingam
 from lingam.utils import make_prior_knowledge, make_dot
@@ -35,10 +34,13 @@ MIN_CAUSAL_EFFECT_FOR_PRINT = 0.0001
 N_DIRECTIONS_PRINT = 10000
 N_DAGS_PRINT = 3
 
+# Downstream module
+DOWNSTREAM = "turquoise"
+DOWNSTREAM_LABEL = f"ME{DOWNSTREAM}"
+
 
 # Seed
-rng = default_rng(seed=42)
-print(rng.random())
+np.random.seed(9999)
 
 
 
@@ -138,7 +140,7 @@ print(prob)
 
 # path-based probability
 from_index = labels.index("Concentration")
-to_index   = labels.index("MEturquoise")
+to_index   = labels.index(DOWNSTREAM_LABEL)
 
 paths = result.get_paths(
     from_index=from_index,
@@ -237,17 +239,8 @@ signed_dominant_prob = np.where(
     positive_prob,
     -negative_prob
 )
+print("\n===== Signed edge probabilities ===== minus values represent negative effects")
 print(signed_dominant_prob.round(3))
-#[[ 0.     0.     0.     0.     0.     0.     0.     0.     0.     0.   ]
-# [-0.137  0.     0.438 -0.168 -0.309 -0.148  0.214 -0.074 -0.793 -0.156] black
-# [ 0.5    0.561  0.    -0.41   0.524  0.252 -0.307  0.117 -0.601 -0.172] green
-# [ 0.323 -0.198 -0.443  0.    -0.226  0.112 -0.53   0.136 -0.667  0.089] brown
-# [ 0.801 -0.303  0.354  0.14   0.     0.239 -0.338 -0.113  0.771 -0.265] blue
-# [ 0.553 -0.348  0.422 -0.098  0.387  0.     0.175 -0.381  0.267 -0.449] red
-# [-0.369  0.427 -0.393 -0.47  -0.662  0.227  0.    -0.374  0.495 -0.32 ] turquoise
-# [ 0.265 -0.19  -0.15   0.178 -0.176 -0.326 -0.307  0.     0.438  0.339] pink
-# [-0.097 -0.15  -0.093 -0.093  0.117  0.041  0.027 -0.028  0.     0.021] yellow
-# [ 0.865 -0.386 -0.216  0.161 -0.508 -0.551 -0.295  0.581  0.349  0.   ]] grey
 
 
 
@@ -261,7 +254,7 @@ from collections import defaultdict
 from lingam.utils import find_all_paths
 
 from_index = labels.index("Concentration")
-to_index   = labels.index("MEturquoise")
+to_index   = labels.index(DOWNSTREAM_LABEL)
 threshold  = MIN_CAUSAL_EFFECT_FOR_METRICS
 
 # Store positive and negative effects separately
@@ -307,7 +300,6 @@ for path, rec in path_records.items():
     # This should correspond to official get_paths() probability
     p_unsigned = p_pos + p_neg
 
-    # Same idea as your signed_dominant_prob for direct edges
     signed_dominant_prob = (
         p_pos if p_pos >= p_neg
         else -p_neg
@@ -338,15 +330,5 @@ path_sign_df = path_sign_df.sort_values(
     ascending=False
 ).reset_index(drop=True)
 
-path_sign_df.head(10)
-#                                           path_name  positive_probability  negative_probability  unsigned_probability  signed_dominant_probability  median_positive_effect  median_negative_effect
-#0             Concentration -> MEblue -> MEturquoise                 0.000                 0.608                 0.608                       -0.608                     NaN               -0.093214
-#1                       Concentration -> MEturquoise                 0.080                 0.419                 0.499                       -0.419                0.011844               -0.042460
-#2            Concentration -> MEgreen -> MEturquoise                 0.049                 0.279                 0.328                       -0.279                0.019206               -0.041166
-#3            Concentration -> MEbrown -> MEturquoise                 0.023                 0.301                 0.324                       -0.301                0.012045               -0.032207
-#4             Concentration -> MEgrey -> MEturquoise                 0.048                 0.228                 0.276                       -0.228                0.010158               -0.008703
-#5              Concentration -> MEred -> MEturquoise                 0.119                 0.152                 0.271                       -0.152                0.006905               -0.011590
-#6             Concentration -> MEpink -> MEturquoise                 0.047                 0.175                 0.222                       -0.175                0.004037               -0.008316
-#7  Concentration -> MEblue -> MEbrown -> MEturquoise                 0.000                 0.173                 0.173                       -0.173                     NaN               -0.028735
-#8  Concentration -> MEblue -> MEgreen -> MEturquoise                 0.047                 0.123                 0.170                       -0.123                0.023177               -0.013702
-#9            Concentration -> MEblack -> MEturquoise                 0.040                 0.121                 0.161                       -0.121                0.007275               -0.008147
+print("\n===== Path probabilities considering sign =====")
+print(path_sign_df.head(10))
