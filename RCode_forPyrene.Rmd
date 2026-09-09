@@ -141,7 +141,7 @@ write.csv(logCPM %>% data.frame,"logCPM.csv")
 #### Making expression table
 ## Genes without concentration-responses were filtered out by ANOVA in WGCNA 
 ## Following BMDExpress, genes will be clustered by WGCNA
-data <- read_delim("./Data/logCPM_forBMDExpress_oneway_0.05_MTC_nofoldfilter_BMD.txt",
+data <- read_delim("./Data/logCPM_forBMDExpress_oneway_0.05_MTC_nofoldfilter_BMD_pyrene.txt",
                   ,skip = 43  ) 
 dim(data)
 # [1] 10116   157
