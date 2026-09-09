@@ -206,7 +206,7 @@ net <- WGCNA::blockwiseModules(
   corOptions = list(use = "pairwise.complete.obs", method = "pearson"),
   minModuleSize = 50,　   　#default: 20
   reassignThreshold = 0, 
-  mergeCutHeight = 0.3,     #default: 0.15
+  mergeCutHeight = 0.35,     #default: 0.15
   deepSplit = 0,　　        #default: 2
   numericLabels = TRUE,
   saveTOMs = FALSE,
@@ -217,7 +217,7 @@ moduleColors <- WGCNA::labels2colors(net$colors)
 moduleColors  %>% unique() %>% length()
 # [1] 9   
 # note: No. of modules is 6 .... minModuleSize 100, mergeCutHeight 0.4, deepSplit = 0 
-# note: No. of modules is 9 ....minModuleSize 50, mergeCutHeight  0.3, deepSplit = 0 
+# note: No. of modules is 9 ....minModuleSize 50, mergeCutHeight  0.35, deepSplit = 0 
 #### The number of modules may vary depending on the version of R or WGCNA.
 
 MEs0 <- WGCNA::moduleEigengenes(datExpr, colors = moduleColors, softPower = softPower)$eigengenes
