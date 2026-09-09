@@ -21,13 +21,13 @@ The manuscript evaluates this workflow using two transcriptomic case studies:
 
 ## Repository contents
 
-### `RCode_forPyrene.Rmd`
-
-R code used for analysis of the zebrafish pyrene RNA-seq dataset
-
 ### `Data/htseq_zebra_pyrene.tsv`
 
 Expression data of zebrafish exposed to pyrene
+
+### `RCode_forPyrene.Rmd`
+
+R code used for analysis of the zebrafish pyrene RNA-seq dataset
 
 ### `PythonCode_forPyrene_9modules.py`
 
