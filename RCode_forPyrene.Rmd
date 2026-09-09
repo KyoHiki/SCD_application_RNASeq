@@ -225,7 +225,7 @@ MEs  <- data.frame( Concentration = Concentration) %>% cbind( WGCNA::orderMEs(ME
   remove_rownames()
   
 
-write.csv(MEs,"logCPM_eigengenes_20250919_9modules.csv")   ### Inout data for python lingam analysis
+write.csv(MEs,"logCPM_eigengenes_pyrene_9modules.csv")   ### Inout data for python lingam analysis
 
 
 
